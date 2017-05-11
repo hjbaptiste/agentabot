@@ -5,27 +5,27 @@
         {
             "name": "Software Developer",
             "description": "Software Engineers are responsible for developing, designing, testing, writing, modifying, and debugging software based off specific requirements.",
-            "skills": ["Java, C++, C#, Python, Node.js"]
+            "skills": ["Java", "C++", "C#", "Python", "Node.js"]
         },
         {
             "name": "Web Developer",
             "description": "Web Developers create web sites by working closely with clients to develop and implement a website according to their vision. Responsibilities include debugging applications, creating applications, writing code, working with graphic designers to develop the layout, working with graphics, video, and audio, and monitoring traffic to the site.",
-            "skills" : ["HTML, XML, JSON, Python, PHP, Ruby, CSS, Javascript"]
+            "skills" : ["HTML", "XML", "JSON", "Python", "PHP", "Ruby", "CSS", "Javascript"]
         },   
         {
             "name": "Scrum Master",
             "description": "The Scrum Master (or Agile Coach) is responsible for increasing productivity amongst the scrum team by managing the process to select and split up project requirements into Sprints, and ensuring the right people are working on the right tasks, and work will be completed in the expected time frame.",
-            "skills" : ["Agile, Scrum, Project Management"]
+            "skills" : ["Agile", "Scrum", "Project Management"]
         },   
         {
             "name": "Data Scientist",
             "description": "A Data Scientist analyzes and interprets complex data, to glean insights and help with decision-making.",
-            "skills" : ["R, Python, C++, Machine Learning, SQL, NoSQL, Hadoop, Spark"]
+            "skills" : ["R", "Python", "C++", "Machine Learning", "SQL", "NoSQL", "Hadoop", "Spark"]
         },   
         {
             "name": "Mobile App Developer",
             "description": "A Mobile App Developer creates application software for smart phones and mobile devices.",
-            "skills" : ["Java, Objective C, Swift, C++, C#"]
+            "skills" : ["Java", "Objective C", "Swift", "C++", "C#"]
         }   
     ]
 }
