@@ -2,7 +2,7 @@
   "name": "luisbot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "agenta.js",
   "dependencies": {
     "botbuilder": "^3.7.0",
     "botbuilder-azure": "3.0.2"
