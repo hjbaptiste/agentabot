@@ -7,7 +7,7 @@
             "answers": {"A": "public static int main(String[] args)", "B": "public int main(String[] args)",
                         "C": "public static void main(String[] args)", "D": "None of the above."},
             "answer": "C",
-            "explaination": "Correct syntax is public static void main(String[] args).",
+            "explanation": "Correct syntax is public static void main(String[] args).",
             "areaOfFocus": "Syntax"
         },
         {
@@ -15,7 +15,7 @@
             "answers": {"A": "8 bit", "B": "16 bit",
                         "C": "32 bit", "D": "64 bit"},
             "answer": "D",
-            "explaination": "The double data type is represented by double-precision 64-bit IEEE 754 floating point.",
+            "explanation": "The double data type is represented by double-precision 64-bit IEEE 754 floating point.",
             "areaOfFocus": "Number Types"
         },
         {
@@ -23,7 +23,7 @@
             "answers": {"A": "0.0d", "B": "0.0f",
                         "C": "0", "D": "Not defined"},
             "answer": "A",
-            "explaination": "double variable has default value of 0.0d if defined as an instance/static variable.",
+            "explanation": "double variable has default value of 0.0d if defined as an instance/static variable.",
             "areaOfFocus": "Number Types"
         },
         {
@@ -33,21 +33,21 @@
                         "C": "Variables, methods and constructors which are declared protected in the superclass can be accessed only by its child class.",
                         "D": "None of the above."},
             "answer": "C",
-            "explaination": "Protected access modifier is used to restrict access to variables, methods and constructors to subclass only. Subclass can lie in different package.",
+            "explanation": "Protected access modifier is used to restrict access to variables, methods and constructors to subclass only. Subclass can lie in different package.",
             "areaOfFocus": "Access Modifier"
         },
         {
             "description": "A class always has a default constructor.",
             "answers": {"A": "True", "B": "False"},
             "answer": "B",
-            "explaination": "It is not mandatory to have a default constructor in a class.",
+            "explanation": "It is not mandatory to have a default constructor in a class.",
             "areaOfFocus": "Class creation"
         },
         {
             "description": "Can a constructor be made final?",
             "answers": {"A": "True", "B": "False"},
             "answer": "B",
-            "explaination": "No, this is not possible.",
+            "explanation": "No, this is not possible.",
             "areaOfFocus": "Class creation"
         },
         {
@@ -57,7 +57,7 @@
                         "C": "A NullPointerException is thrown when object property is set as null.",
                         "D": "None of the above."},
             "answer": "A",
-            "explaination": "A NullPointerException is thrown when calling the instance method of a null object or modifying/accessing field of a null object.",
+            "explanation": "A NullPointerException is thrown when calling the instance method of a null object or modifying/accessing field of a null object.",
             "areaOfFocus": "Exception Handling"
         },
         {
@@ -66,14 +66,14 @@
                         "B": "Serialization is the process of writing the state of an object to a byte stream.",
                         "C": "Both of the above.", "D": "None of the above."},
             "answer": "B",
-            "explaination": "Serialization is the process of writing the state of an object to a byte stream.",
+            "explanation": "Serialization is the process of writing the state of an object to a byte stream.",
             "areaOfFocus": "Serialization"
         },
         {
             "description": "Is it necessary that each try block must be followed by a catch block?",
             "answers": {"A": "True", "B": "False"},
             "answer": "B",
-            "explaination": "It is not necessary that each try block must be followed by a catch block. It should be followed by either a catch block or a finally block.",
+            "explanation": "It is not necessary that each try block must be followed by a catch block. It should be followed by either a catch block or a finally block.",
             "areaOfFocus": "Exception Handling"
         },
         {
