@@ -1,0 +1,92 @@
+{
+    "name": "agileQuestions",
+    "desc": "Agile assessment which provides Multiple Choice Questions (MCQs) related to Core Agile Scrum.",
+    "questions": [
+        {
+            "description": "Who is responsible for prioritizing the product backlog?",
+            "answers": {"A": "Product Owner", "B": "Product Manager",
+                        "C": "Lead Developer", "D": "Tester"},
+            "answer": "A",
+            "explanation": "The product owner represents the customer and is accountable for ensuring that the team delivers value to the business. The product owner writes the customer-focused items (typically user stories), prioritizes them and adds them to the product backlog.",
+            "areaOfFocus": "Roles and Responsibilities"
+        },
+        {
+            "description": "Which one of the following is not a Scrum role?",
+            "answers": {"A": "Product Owner", "B": "Scrum Master",
+                        "C": "Product Manager", "D": "Team"},
+            "answer": "C",
+            "explanation": "Scrum has only three roles and the relationship between these roles is clear and simple. There are also supporting roles, like product manager, but these are not part of Scrum itself -- albeit still important to its success.",
+            "areaOfFocus": "Roles and Responsibilities"
+        },
+        {
+            "description": "Which one of the following is not a Scrum artifact?",
+            "answers": {"A": "Product Backlog", "B": "Story",
+                        "C": "Sprint Backlog", "D": "Burndown Chart"},
+            "answer": "B",
+            "explanation": "In the purest sense of Scrum, there are only three clear artifacts: Product Backlog, Sprint Backlog and Burndown Chart. There is and always will be a strong argument for the inclusion of stories, and to be honest, they are something that I always include.",
+            "areaOfFocus": "Meetings and Artifacts"
+        },
+        {
+            "description": "Which of the following meetings is not part of Scrum?",
+            "answers": {"A": "Product review meeting", 
+                        "B": "Sprint review meeting",
+                        "C": "Sprint planning meeting",
+                        "D": "Sprint retrospective meeting"},
+            "answer": "A",
+            "explanation": "A product review meeting is not part of the formal sequence of meetings. There are primarily only three meetings within the Scrum environment. At the start of each Sprint, there is a review meeting to discuss what is in the iteration and how the team will deliver it. At the end of the sprint, the review presents what has been accomplished and the retrospective identifies lessons learned..",
+            "areaOfFocus": "Meetings and Artifacts"
+        },
+        {
+            "description": "What is meant by “Yesterday’s Weather” in an Agile project?",
+            "answers": {"A": "Teams work less well when it rains", "B": "Keeping metrics of earlier work to help with future estimates", 
+                        "C": "Retrospectives should include less important topics such as the weather", "D":"Estimating is as futile as predicting the weather"},
+            "answer": "B",
+            "explanation": "This reference refers to keeping metrics of earlier work to help with future estimates. Keeping track of the team’s velocity through the use of burndown charts will help you to more accurately estimate the team’s velocity on the next Iteration or project.",
+            "areaOfFocus": "Meetings and Artifacts"
+        },
+        {
+            "description": "Velocity is a measure of …",
+            "answers": {"A": "Customer buy-in", "B": "Project progress", "C": "Executive support", "D": "Risk mitigation"},
+            "answer": "B",
+            "explanation": "Project progress is measured through velocity. Velocity is an extremely simple and powerful method for accurately measuring the rate at which teams consistently deliver business value. To calculate velocity, simply add up the estimates of the features successfully delivered in an iteration -- probably in story points, but may be ideal days.",
+            "areaOfFocus": "Terms and Definitions"
+        },
+        {
+            "description": "In the popular prioritization technique called “MoSCoW”, the “M” stands for:",
+            "answers": {"A": "May have",
+                        "B": "Major",
+                        "C": "Must have",
+                        "D": "Mandatory"},
+            "answer": "C",
+            "explanation": "When working with stories from a product backlog especially during release planning, instead of ranking them numerically, apply the Must Have; Should Have; Could Have; Won't Have rule to each story. Ask the product owner to write an M, S, C or W in front of every story.",
+            "areaOfFocus": "Terms and Definitions"
+        },
+        {
+            "description": "A burn-down chart shows ...",
+            "answers": {"A": "The declining energy level of the team",
+                        "B": "The progress of the work and features completed",
+                        "C": "The number of hours worked after dark", "D": "The rate of reduction of budget for a project"},
+            "answer": "B",
+            "explanation": "The burndown chart is a representation of the number of hours remaining for completion of a project; usually represented in chart form with points plotted on an x and y axis that map a downward trend of work left to do until burning down to zero.",
+            "areaOfFocus": "Meetings and Artifacts"
+        },
+        {
+            "description": "What is a Sprint?",
+            "answers": {"A": "The rush during the last few weeks of the project", "B": "A period of high productivity during the start of the project",
+                        "C": "A “time-boxed” period of “potentially shippable” work"},
+            "answer": "C",
+            "explanation": "A sprint is a “time-boxed” period of “potentially shippable” work. In Scrum, iterations are called sprints, and they are the most important sequences in the project. The Scrum project starts with a sprint planning meeting and ends with a sprint review and a sprint retrospective meeting.",
+            "areaOfFocus": "Terms and Definitions"
+        },
+        {
+            "description": "The reason for holding regular retrospectives is ...",
+            "answers": {"A": "It allows the team to take a welcome break from work", 
+                        "B": "It gives management information to use in performance reviews",
+                        "C": "It allows learning that can be used to improve team performance", 
+                        "D": "It prevents deviation from the process the team has been following"},
+            "answer": "C",
+            "explanation": "It allows learning that can be used to improve team performance. One of the 12 principles behind the Agile Manifesto is, “At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.”",
+            "areaOfFocus": "Terms and Definitions"
+        }
+    ]
+}
