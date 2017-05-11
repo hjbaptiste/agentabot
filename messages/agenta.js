@@ -10,6 +10,7 @@ var config = require('./configuration');
 var javaQuestions = require('./javaQuiz'); // no need to add the .json extension
 var agileQuestions = require('./agileQuiz'); // no need to add the .json extension
 
+
 var useEmulator = (process.env.NODE_ENV == 'development');
 useEmulator = true;
 
