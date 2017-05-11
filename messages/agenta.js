@@ -11,6 +11,7 @@ var javaQuestions = require('./javaQuiz'); // no need to add the .json extension
 var agileQuestions = require('./agileQuiz'); // no need to add the .json extension
 var careers = require('./careerSkills');
 
+
 var useEmulator = (process.env.NODE_ENV == 'development');
 useEmulator = true;
 
@@ -73,13 +74,13 @@ luisIntents.onDefault ([
     }
 ]);
 
-luisIntents.matches(/\b(agenta|Agenta|Agenta)\b/i, '/wakeAgenta')
+luisIntents.matches(/\b(agenta|Agenta|Agenta|Hi|Yo|Hello)\b/i, '/wakeAgenta')
     .matches('TestMySkill', '/testSkill')
     .matches('AnalyseImage', '/analyseImage')
     .matches('SendEmail', '/sendEmail');
 
     bot.dialog('/wakeAgenta', function(session) {
-        session.send("Hi!, I\'m Agenta, the skills assessment bot.");
+        session.send("Hi! I\'m Agenta, the skills assessment bot.");
         // "Push" the help dialog onto the dialog stack
         session.beginDialog('/help');
         session.endDialog();
@@ -90,7 +91,7 @@ luisIntents.matches(/\b(agenta|Agenta|Agenta)\b/i, '/wakeAgenta')
  * @Descripton: Informs the uer what functions that can be performed.
  */
 bot.dialog('/help', function(session) {
-        session.endDialog("I can help assess your proficiency in various areas of technology.  You can say things like:\n\n\"I want to pursue a carreer as a Software Engineer\"\n\n\"I would like to test my Java skills\"");
+        session.endDialog("I can help assess your proficiency in various areas of technology.  You can say things like:\n\n\"I want to pursue a career as a Software Developer\"\n\n\"I would like to test my Java skills\"");
         //session.endDialog("Go ahead, I\'m listening");
     }
 );
@@ -110,8 +111,18 @@ bot.dialog('/testSkill', [
                 var entity = testSkillEntities[key];
                 // See if what the user said has the 'when' and the 'holiday' Entities
                 if (entity.type == 'whichCareer') {
-                    career = entity.entity;
-                    doCareer(session, career);
+                    //Confirm the career with the user
+                    session.send("Great! Sounds like you're interested in a career in %s.", entity.entity);
+                    builder.Prompts.confirm(session, "Is that correct?");
+                    var whichCareer_confirm = session.message.text;
+                    //If the user confirms their career choice, move forward
+                    if (whichCareer_confirm == 'Yes') {
+                        career = entity.entity;
+                        doCareer(session, career);
+                    }
+                    //If the user doesn't confirm their career choice, print out careers to choose from
+                    else {
+                    }
                 }
             }
         } else if (skillEntity) {
