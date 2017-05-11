@@ -135,9 +135,45 @@ bot.dialog('/testSkill', [
     }
 ]);
 
-var doCareer = function (session, whichCareer) {
+function doCareer (session, whichCareer) {
+    //go through the list of careers and enumerate the skills applicable for the chosen input
+    var careerList = careers.careerSkills;
+    var career;
+    var skillsList = "";
+    console.log("Career: " + whichCareer);
 
-};
+    for(var i in careerList) {
+        console.log("Career name:" + careerList.name);
+        if(careerList[i].name.toLowerCase == whichCareer.toLowerCase) {
+            career = careerList[i];
+            break;
+        }
+    }
+    var textResp = "These are the skills needed for a career as a " + whichCareer + ":";
+    var skills = career.skills;
+    for(var j in skills) {
+        skillsList += '\n\n'+ skills[j];    
+    }
+    session.send(textResp + skillsList);
+    session.beginDialog("/askToTakeTest");
+}
+
+bot.dialog('/askToTakeTest', [
+    function(session) {
+        builder.Prompts.text(session, "Which skill would you like to be quized on?");
+    },
+    function(session, results){
+        var skillToTest = results.response;
+        console.log("Response:" + results.response);
+        if(skillToTest.toLowerCase == "Java".toLowerCase || skillToTest.toLowerCase == "Agile".toLowerCase) {
+            doQuiz(javaQuestions);
+        } else {
+            session.endDialog("Sorry, this test is not yet available.");
+            session.beginDialog("/help");
+        }
+    }
+]);
+
 
 var testSkills = function(session, whichSkill) {
     if ("Java".toLowerCase == whichSkill.toLowerCase) {
