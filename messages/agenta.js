@@ -110,7 +110,7 @@ bot.dialog('/testSkill', [
                 // See if what the user said has the 'when' and the 'holiday' Entities
                 if (entity.type == 'whichCareer') {
                     career = entity.entity;
-                    doCareer(career);
+                    doCareer(session, career);
                 }
             }
         } else if (skillEntity) {
@@ -120,7 +120,7 @@ bot.dialog('/testSkill', [
                 // See if what the user said has the 'when' and the 'holiday' Entities
                 if (entity.type == 'whichSkill') {
                     skill = entity.entity;
-                    testSkills(skill);
+                    testSkills(session, skill);
                 }
             }
         } else {
@@ -134,11 +134,11 @@ bot.dialog('/testSkill', [
     }
 ]);
 
-var doCareer = function (whichCareer) {
+var doCareer = function (session, whichCareer) {
 
 };
 
-var testSkills = function(whichSkill) {
+var testSkills = function(session, whichSkill) {
     if ("Java".toLowerCase == whichSkill.toLowerCase) {
         doQuiz(javaQuestions);
     } else if ("Agile".toLowerCase == whichSkill.toLowerCase) {
@@ -147,12 +147,39 @@ var testSkills = function(whichSkill) {
 };
 
 
-function doQuiz (whichQuiz) {
+function doQuiz (session, whichQuiz) {
+    var score = 0;
     var questions = whichQuiz.questions;
-    for (key in questions) {
-
+    var questionsCopy = questions;
+    var numQuestions = questionsCopy.length;
+    var questionNum = 1;
+    while (questionsCopy.length > 0) {
+         var currentQuestion = questionsCopy[getRandomInt(0, numQuestions)];
+         var description = currentQuestion.description;
+         var answers = currentQuestion.answers;
+         var answer = currentQuestion.answer;
+         var explanation = currentQuestion.explanation;
+         var areaOfFocus = currentQuestion.areaOfFocus;
+         session.send("Question %i - %s", questionNum, description);
+         var choices = "";
+         while (answers.length > 0) {
+             for (key in answers) {
+                 choices = ("\nn%s - %s", key, answers[key])
+             }
+         }
+         // Prompt user to select an answer from the multiple choices
+        builder.Prompts.choice(session, choices);
     }
 };
+
+/**
+ * Generates random integer between two numbers low (inclusive) and high (exclusive)
+ * @param {*} low 
+ * @param {*} high 
+ */
+var getRandomInt = function (low, high) {
+    return Math.floor(Math.random() * (high - low) + low);
+}
 /**
  * @Description: This dialog is triggered when the user says 'bye'.  It stops
  * all dialog and respond to the user
