@@ -133,7 +133,7 @@ bot.dialog('/testSkill', [
     }
 ]);
 
-var doCareer = function () {
+var doCareer = function (whichCareer) {
 
 }
 
