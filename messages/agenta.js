@@ -68,7 +68,7 @@ luisIntents.onDefault ([
         session.beginDialog('/help');
     },
     function (session) {
-        session.beginDialog('/process');
+        session.beginDialog('/testSkill');
     }
 ]);
 
@@ -120,7 +120,7 @@ bot.dialog('/testSkill', [
                 // See if what the user said has the 'when' and the 'holiday' Entities
                 if (entity.type == 'whichSkill') {
                     skill = entity.entity;
-                    doQuiz(skill);
+                    testSkills(skill);
                 }
             }
         } else {
@@ -136,14 +136,26 @@ bot.dialog('/testSkill', [
 
 var doCareer = function (whichCareer) {
 
-}
+};
 
-var doQuiz = function(whichQuiz) {
+var testSkills = function(whichSkill) {
+    if ("Java".toLowerCase == whichSkill.toLowerCase) {
+        doQuiz(javaQuestions);
+    } else if ("Agile".toLowerCase == whichSkill.toLowerCase) {
+        doQuiz(agileQuestions);
+    }
+};
 
-}
 
+function doQuiz (whichQuiz) {
+    var questions = whichQuiz.questions;
+    for (key in questions) {
+
+    }
+};
 /**
- * @Description: This dialog is triggered when the user says 'bye'
+ * @Description: This dialog is triggered when the user says 'bye'.  It stops
+ * all dialog and respond to the user
  */
 bot.dialog('/bye', function (session) {
     // end dialog with a cleared stack.  we may want to add an 'onInterrupted'
