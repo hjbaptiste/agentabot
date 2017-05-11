@@ -9,7 +9,7 @@ var endOfLine = require('os').EOL;
 var config = require('./configuration');
 var javaQuestions = require('./javaQuiz'); // no need to add the .json extension
 var agileQuestions = require('./agileQuiz'); // no need to add the .json extension
-
+var careers = require('./careerSkills');
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 useEmulator = true;
@@ -160,7 +160,7 @@ function doCareer (session, whichCareer) {
 
 bot.dialog('/askToTakeTest', [
     function(session) {
-        builder.Prompts.text(session, "Which skill would you like to be quized on?");
+        builder.Prompts.text(session, "Which skill would you like to be quizzed on?");
     },
     function(session, results){
         var skillToTest = results.response;
