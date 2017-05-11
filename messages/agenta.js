@@ -44,41 +44,17 @@ var luisAPIHostName = process.env.LuisAPIHostName || 'westus.api.cognitive.micro
 const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' + luisAppId + '&subscription-key=' + luisAPIKey;
 
 // Main dialog with LUIS
-var recognizer = new builder.LuisRecognizer(LuisModelUrl);
+var luisRecognizer = new builder.LuisRecognizer(LuisModelUrl);
 
 //****************************************************************/
 // Begin intent logic setup.  An intent is an action a user wants
 // to perform.  They, in general, are grouped as expressions that mean
 // the same thing, but may be constructed differently.  We can have as
 // many as we like here.
-var textIntents = new builder.IntentDialog();
-var luisIntents = new builder.IntentDialog({ recognizers: [recognizer] });
+var luisIntents = new builder.IntentDialog({ recognizers: [luisRecognizer] });
 
-// Maps the 'root' dialog to the test intents.
-bot.dialog('/', textIntents);
-
-// Maps the 'process' dialog to the LUIS intents.
-bot.dialog('/process', luisIntents);
-
-/**
- * @Description: Wakes up Holly bot only if user says 'holly' prior to saying anything else
- */
-textIntents.matches(/^agenta|^Agenta|^Agenta/i, [
-    function(session) {
-        session.send("Hi!, I\'m Agenta, the skills assessment bot.");
-
-        // "Push" the help dialog onto the dialog stack
-        session.beginDialog('/help');
-    },
-    function(session) {
-         session.beginDialog('/process');
-    }
-]);
-
-/**
- * Default text intent when what user said to wake up Holly bot is not matched
- */ 
-textIntents.onDefault(builder.DialogAction.send(""));
+// Maps the 'root' dialog to the LUIS intents.
+bot.dialog('/', luisIntents);
 
 /**
  * @Description: Default LUIS intent when the funtionality the user wants to use doesn't
@@ -95,212 +71,75 @@ luisIntents.onDefault ([
     }
 ]);
 
-/**
- * @Descripton: Informs the uer what functions that can be performed.
- */
-bot.dialog('/help', function(session) {
-        session.endDialog("I can help assess your proficiency in various areas of technology.  You can say things like:\n\nI want to pursue a carreer as a Software Engineer\n\nI would like to test my Java skills");
-        //session.endDialog("Go ahead, I\'m listening");
+luisIntents.matches(/\b(agenta|Agenta|Agenta)\b/i, '/wakeAgenta')
+    .matches('TestMySkill', '/testSkill')
+    .matches('AnalyseImage', '/analyseImage')
+    .matches('SendEmail', '/sendEmail');
+
+    bot.dialog('/wakeAgenta', function(session) {
+        session.send("Hi!, I\'m Agenta, the skills assessment bot.");
+        // "Push" the help dialog onto the dialog stack
+        session.beginDialog('/help');
+        session.endDialog();
     }
 );
 
 /**
- * @Description: Returns the current date, year, month, day for the current day
- * @Return: Current Date
+ * @Descripton: Informs the uer what functions that can be performed.
  */
-var getTodaysDate = function (param) {
-    // Create a new Date object representing today's date
-    let today = new Date();
-    if (param == "date") {
-        // Return current date
-        return today;
-    } else if (param == "year") {
-        // Return the current year
-        return today.getFullYear();
-    } else if (param == "month") {
-        // Return the current month [0 - 11] with January being at index '0' and
-        // December being at index '11'.
-        return today.getMonth();
-    } else if (param == "day") {
-        // Return the current day of the month
-        return today.getDate();
+bot.dialog('/help', function(session) {
+        session.endDialog("I can help assess your proficiency in various areas of technology.  You can say things like:\n\n\"I want to pursue a carreer as a Software Engineer\"\n\n\"I would like to test my Java skills\"");
+        //session.endDialog("Go ahead, I\'m listening");
     }
-};
+);
 
-//var allUSHolidays = holidays.usholidays;
-
-/**
- * @Description:Returns the a JSON object containing the list of remaining holidays and the number of
- * holidays that is left for the year.
- * @Return: JSON object
- */
-/**var getWhenHoliday = function(param){
-    var whenHoliday = "";
-    // Loop thru the all of the US Holidays
-    for(key in allUSHolidays) {
-        // Get the Holiday at the current index in the loop
-        var holiday = allUSHolidays[key];
-        if ((holiday.name).toLowerCase() === param) {
-            // Create a JSON object representing the Holiday
-            whenHoliday = {"name": holiday.name , "date": holiday.date,
-            "month": holiday.month, "day": holiday.day};
-            break;
-        }
-    }
-    return whenHoliday;
-};
-
-
-/**
- * @Description:Returns the a JSON object containing the list of remaining holidays and the number of
- * holidays that is left for the year.
- * @Return: JSON object
- *//*
-var getRemainingHolidays = function(){
-    var remainingHolidaysString = "";
-    var numRemainingHolidays = 0;
-    // Loop thru the all of the US Holidays
-    for(key in allUSHolidays) {
-        // Get the Holiday at the current index in the loop
-        var holiday = allUSHolidays[key];
-        if (holiday.month > getTodaysDate("month") + 1 ||
-        (holiday.month == getTodaysDate("month") + 1 && holiday.day > getTodaysDate("day"))) {
-            // Append the new line character to the end of the string that contains the list 
-            // of holidays that have been found and add the current one to it.
-            remainingHolidaysString += "\n\n" + holiday.name;
-            numRemainingHolidays++;
-        }
-    }
-    // Create a JSON object representing the list of Holidays and the count
-    var remainingHolidays = {"remainingHolidays": remainingHolidaysString, "countRemaining": numRemainingHolidays};
-    return remainingHolidays;
-};
-
-
-/**
- * @Description: Triggered when user says something which matches the 'allHolidays'
- * intent.  It loops through the list of US Holidays in the holidays.json file and
- * send them to the current conversation.
- *//*
-luisIntents.matches('allHolidays', [
+bot.dialog('/testSkill', [
     function (session, args) {
-        var allHolidays = '';
-        // Loop thru the all of the US Holidays
-        for (var i in allUSHolidays) {
-            // Append the new line character to the end of the string that contains the list 
-            // of holidays that have been found and add the current one to it.
-            allHolidays += '\n\n'+allUSHolidays[i].name;
-        }
-        // Send the entire list of Holidays to the conversation
-        session.send("These are ALL US Holidays: %s.", allHolidays);
-    },
-    function (session) {
-        session.beginDialog('/process');
-    }
-]);
-
-
-/**
- * @Description: Triggered when user says something which matches the 'remainingHolidays'
- * intent.  The 'findEntity' built-in funtion is used to get the Entities returned by the Natural
- * Language Processor (LUIS).
- * 
- * It call the 'getRemainingHolidays' function to calculate what the remaining holidays are and how many
- * are left for the year.
- *//*
-luisIntents.matches('remainingHolidays', [
-    function(session, args) {
+        //Show user that we're processing their request by sending the typing indicator
+            session.sendTyping();
         // Get the list of Entities returned from LUIS
-        var remainEntities = args.entities;
-        // See if what the user said has the 'remain' and the 'count' Entities
-        var remainEntity = builder.EntityRecognizer.findEntity(remainEntities, 'remain');
-        var countEntity = builder.EntityRecognizer.findEntity(remainEntities, 'count');
-        if (countEntity) {
-            // If the 'count' Entity is returned then have Holly say how many Holidays are remaining
-            session.send("The number of Holidays left is %s.", getRemainingHolidays().countRemaining);       
-        } else if (remainEntity) {
-            // If the 'remain' Entity is returned then have Holly say the Holidays that are remaining
-            session.send("The remaining Holidays are:\n\n %s", getRemainingHolidays().remainingHolidays);
-        }
-        else {
-            // If neither Entity was returned then inform the user and call the 'help' dialog
-            session.send("Sorry, I didn't understand.");
-            session.beginDialog('/help');
-        }
-    },
-    function(session) {
-        session.beginDialog('/process');
-    }
-]);
-
-
-/**
- * @Description: Triggered when user says something which matches the 'whenHoliday'
- * intent.
- * 
- * It call the 'getRemainingHolidays' function to calculate what the remaining holidays are and how many
- * are left for the year.
- *//*
-luisIntents.matches('whenHoliday', [
-    function(session, args) {
-        // Get the list of Entities returned from LUIS
-        var whenEntities = args.entities;   
-        var isWhenEntity = false;
-        var isHolidayEntity = false;
-        var when = "";
-        var holiday = "";
-        for(key in whenEntities) {
-            // Get the Holiday at the current index in the loop
-            var entity = whenEntities[key];
-            // See if what the user said has the 'when' and the 'holiday' Entities
-            if (entity.type == 'when') {
-                isWhenEntity = true;
-                when = entity.entity;
-            } else if (entity.type == 'holiday') {
-                isHolidayEntity = true;
-                holiday = entity.entity;
+        var testSkillEntities = args.entities;
+        // See if what the user said has the '' and the 'count' Entities
+        var careerEntity = builder.EntityRecognizer.findEntity(testSkillEntities, 'typeCareer');
+        var skillEntity = builder.EntityRecognizer.findEntity(testSkillEntities, 'typeSkill');
+        if (careerEntity) {
+            for(key in testSkillEntities) {
+                // Get the Holiday at the current index in the loop
+                var entity = testSkillEntities[key];
+                // See if what the user said has the 'when' and the 'holiday' Entities
+                if (entity.type == 'whichCareer') {
+                    career = entity.entity;
+                    doCareer(career);
+                }
             }
-        }
-        if (isWhenEntity && isHolidayEntity) {
-            var whenHoliday = getWhenHoliday(holiday);
-            var botResponse = "";
-            var responseVar = "";
-            if (when == "date" || when == "when") {
-                responseVar = (whenHoliday.name, whenHoliday.date);
-                botResponse = "%s is on %s";     
-            } else if(when == "month") {
-                responseVar = (whenHoliday.name, whenHoliday.month);
-                botResponse = "%s is on %s";
-            } else if(when == "day") {
-                responseVar = (whenHoliday.name, whenHoliday.day);
-                botResponse = "%s is on the %s";
+        } else if (skillEntity) {
+            for(key in testSkillEntities) {
+                // Get the Holiday at the current index in the loop
+                var entity = testSkillEntities[key];
+                // See if what the user said has the 'when' and the 'holiday' Entities
+                if (entity.type == 'whichSkill') {
+                    skill = entity.entity;
+                    doQuiz(skill);
+                }
             }
-            session.send(botResponse % responseVar); 
         } else {
             // If neither Entity was returned then inform the user and call the 'help' dialog
             session.send("Sorry, I didn't understand.");
             session.beginDialog('/help');
         }
     },
-    function(session) {
-        session.beginDialog('/process');
+    function () {
+
     }
 ]);
 
-/* Eperimenting with a hi trigger
-bot.dialog('/hi', [
-    function (session) {
-        // end dialog with a cleared stack.  we may want to add an 'onInterrupted'
-        // handler to this dialog to keep the state of the current
-        // conversation by doing something with the dialog stack
-        session.send("Hi there! You can say:");
-        session.beginDialog('/help');
-    },
-    function(session) {
-        session.beginDialog('/process');
-    }
-]).triggerAction({matches: /^hi|Hello|Hello/i});
-*/
+var doCareer = function () {
+
+}
+
+var doQuiz = function(whichQuiz) {
+
+}
 
 /**
  * @Description: This dialog is triggered when the user says 'bye'
