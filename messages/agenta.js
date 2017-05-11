@@ -11,6 +11,7 @@ var javaQuestions = require('./javaQuiz'); // no need to add the .json extension
 
 
 var useEmulator = (process.env.NODE_ENV == 'development');
+useEmulator = true;
 
 var connector = useEmulator ? new builder.ChatConnector() : new botbuilder_azure.BotServiceConnector({
     appId: process.env['MicrosoftAppId'],
@@ -22,24 +23,14 @@ var connector = useEmulator ? new builder.ChatConnector() : new botbuilder_azure
 // Create bot
 var bot = new builder.UniversalBot(connector);
 
-// Setup Restify Server
-var server = restify.createServer();
-
-// Handle Bot Framework messages
-server.post('/api/messages', connector.listen());
-
-// Serve a static web page - for testing deployment
-server.get(/.*/, restify.serveStatic({
-	'directory': '.',
-	'default': 'index.html'
-}));
-
 if (useEmulator) {
+    // Setup Restify Server
     var restify = require('restify');
     var server = restify.createServer();
     server.listen(3978, function() {
         console.log('test bot endpont at http://localhost:3978/api/messages');
     });
+    // Handle Bot Framework messages
     server.post('/api/messages', connector.listen());    
 } else {
     module.exports = { default: connector.listen() }
@@ -136,14 +127,14 @@ var getTodaysDate = function (param) {
     }
 };
 
-var allUSHolidays = holidays.usholidays;
+//var allUSHolidays = holidays.usholidays;
 
 /**
  * @Description:Returns the a JSON object containing the list of remaining holidays and the number of
  * holidays that is left for the year.
  * @Return: JSON object
  */
-var getWhenHoliday = function(param){
+/**var getWhenHoliday = function(param){
     var whenHoliday = "";
     // Loop thru the all of the US Holidays
     for(key in allUSHolidays) {
@@ -164,7 +155,7 @@ var getWhenHoliday = function(param){
  * @Description:Returns the a JSON object containing the list of remaining holidays and the number of
  * holidays that is left for the year.
  * @Return: JSON object
- */
+ *//*
 var getRemainingHolidays = function(){
     var remainingHolidaysString = "";
     var numRemainingHolidays = 0;
@@ -190,7 +181,7 @@ var getRemainingHolidays = function(){
  * @Description: Triggered when user says something which matches the 'allHolidays'
  * intent.  It loops through the list of US Holidays in the holidays.json file and
  * send them to the current conversation.
- */
+ *//*
 luisIntents.matches('allHolidays', [
     function (session, args) {
         var allHolidays = '';
@@ -216,7 +207,7 @@ luisIntents.matches('allHolidays', [
  * 
  * It call the 'getRemainingHolidays' function to calculate what the remaining holidays are and how many
  * are left for the year.
- */
+ *//*
 luisIntents.matches('remainingHolidays', [
     function(session, args) {
         // Get the list of Entities returned from LUIS
@@ -249,7 +240,7 @@ luisIntents.matches('remainingHolidays', [
  * 
  * It call the 'getRemainingHolidays' function to calculate what the remaining holidays are and how many
  * are left for the year.
- */
+ *//*
 luisIntents.matches('whenHoliday', [
     function(session, args) {
         // Get the list of Entities returned from LUIS
