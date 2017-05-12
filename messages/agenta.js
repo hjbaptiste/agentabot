@@ -91,11 +91,9 @@ luisIntents.matches(/\b(agenta|Agenta|Agenta|Hi|Yo|Hello)\b/i, '/wakeAgenta')
  */
 bot.dialog('/help', function(session) {
         session.endDialog("I can help assess your proficiency in various areas of technology.  You can say things like:\n\n\"I want to pursue a career as a Software Developer\"\n\n\"I would like to test my Java skills\"");
-        //session.endDialog("Go ahead, I\'m listening");
     }
 );
 
-var careerInTest;
 bot.dialog('/testSkill', [
     function (session, args) {
         //Show user that we're processing their request by sending the typing indicator
@@ -111,10 +109,7 @@ bot.dialog('/testSkill', [
                 var entity = testSkillEntities[key];
                 // See if what the user said has the 'when' and the 'holiday' Entities
                 if (entity.type == 'whichCareer') {
-                    //Confirm the career with the user
-                    //session.send("Great! Sounds like you're interested in a career in %s.", entity.entity);
-                    //builder.Prompts.confirm(session, "Is that correct?");
-                    careerInTest = entity.entity;
+                    session.userData.careerInTest = entity.entity;
                     session.beginDialog('/confirm', "Career");
                 }
             }
@@ -141,7 +136,7 @@ bot.dialog('/confirm', [
         var topic = args;
         console.log("Topic:" + topic);
         if(topic == "Career") {
-            session.send("Great! Sounds like you're interested in a career in %s.", careerInTest);
+            session.send("Great! Sounds like you're interested in a career in %s.", session.userData.careerInTest);
             builder.Prompts.confirm(session, "Is that correct?");
         }
     },
@@ -149,7 +144,7 @@ bot.dialog('/confirm', [
         var whichCareer_confirm = session.message.text;
         //If the user confirms their career choice, move forward
         if (whichCareer_confirm == 'Yes') {
-            doCareer(session, careerInTest);
+            doCareer(session, session.userData.careerInTest);
         }
         //If the user doesn't confirm their career choice, print out careers to choose from
         else {
