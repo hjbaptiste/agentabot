@@ -1,5 +1,18 @@
 Agentabot 
 ------------------------------------
+How to Run
+1) content.html
+Bot is deployed to Azure (michelle usi's account)
+Open the content.html in browser and start chatting!
+2) emulator
+Clone the code from https://github.com/hjbaptiste/agentabot.git
+Run!
+3) Facebook
+Look for Agenta (need to add Michelle Usi as friend as she owns)
+4) Skype (not Skype for Business)
+Search for Agenta or click on the Add to Skype button on the html
+
+------------------------------------
 File Structure
 
 Assie_Luis.json: export of the NLP used to understand user's request
