@@ -199,9 +199,10 @@ function doQuiz (session, whichQuiz) {
     var score = 0;
     var questions = whichQuiz.questions;
     var questionsCopy = questions;
-    var numQuestions = questionsCopy.length;
+    
     var questionNum = 1;
     while (questionsCopy.length > 0) {
+         var numQuestions = questionsCopy.length;
          var randomNum = getRandomInt(0, numQuestions);
          var currentQuestion = questionsCopy[randomNum];
          var description = currentQuestion.description;
@@ -224,7 +225,6 @@ function doQuiz (session, whichQuiz) {
         //builder.Prompts.choice(session, choices);
         builder.Prompts.text(session, "Select the correct answer", "a|b|c");
         questionsCopy.splice(randomNum, 1);
-        numQuestions = questionsCopy.length;
         questionNum++;
     }
     return score;
