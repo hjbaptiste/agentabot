@@ -139,7 +139,7 @@ bot.dialog('/confirm', [
         var topic = args;
         console.log("Topic:" + topic);
         if(topic == "Career") {
-            session.send("Great! Sounds like you're interested in a career in %s.", session.userData.careerInTest);
+            session.send("Great! Sounds like you're interested in a career as a %s.", session.userData.careerInTest);
             builder.Prompts.confirm(session, "Is that correct?");
         }
     },
@@ -162,15 +162,22 @@ function doCareer (session, whichCareer) {
     var careerList = careers.careerSkills;
     var career;
     var skillsList = "";
-    console.log("Career: " + whichCareer);
-
+    var found = false;
+    
     for(var i in careerList) {
-        console.log("Career name:" + careerList.name);
-        if(careerList[i].name.toLowerCase == whichCareer.toLowerCase) {
+        if(careerList[i].name.toLowerCase() == whichCareer.toLowerCase()) {
             career = careerList[i];
+            found = true;
             break;
         }
     }
+
+    if(found == false) {
+        session.send("Sorry, this option is not yet available.");
+        session.beginDialog("/help");
+    }
+
+    //since the career name is found, check for the skills to be tested on
     var textResp = "Here are a few skills I can quiz you on related to a " + whichCareer + ".";
     var skills = career.skills;
     for(var j in skills) {
@@ -187,8 +194,9 @@ bot.dialog('/askToTakeTest', [
     function(session, results){
         var skillToTest = results.response;
         console.log("Response:" + results.response);
-        if(skillToTest.toLowerCase == "Java".toLowerCase || skillToTest.toLowerCase == "Agile".toLowerCase) {
-            doQuiz(javaQuestions);
+        if(skillToTest.toLowerCase() == "Java".toLowerCase() || skillToTest.toLowerCase() == "Agile".toLowerCase()) {
+            session.conversationData.skill = skillToTest;
+            session.beginDialog('/testSkills', {skill: skillToTest}); 
         } else {
             session.endDialog("I'm sorry, but I don't have a quiz for this skill yet.");
             session.beginDialog("/help");
@@ -253,7 +261,7 @@ bot.dialog('/doQuiz', [
         } 
     },
     function (session, results) {
-        session.send(results.response);
+        //session.send(results.response);
         var questionsCopy = session.userData.whichQuiz.questions;
         if(results.response) {
             if (session.dialogData.correctAnswer.toLowerCase() == results.response.toLowerCase()) {
@@ -292,8 +300,8 @@ var getRandomInt = function (low, high) {
  * all dialog and respond to the user
  */
 bot.dialog('/bye', function (session) {
-    // end dialog with a cleared stack.  we may want to add an 'onInterrupted'
-    // handler to this dialog to keep the state of the current
-    // conversation by doing something with the dialog stack
-    session.endDialog("Ok... See you later.");
+        // end dialog with a cleared stack.  we may want to add an 'onInterrupted'
+        // handler to this dialog to keep the state of the current
+        // conversation by doing something with the dialog stack
+        session.endDialog("Ok... See you later.");
 }).triggerAction({matches: /^bye|Goodbye|Bye/i});
