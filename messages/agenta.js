@@ -73,14 +73,23 @@ luisIntents.onDefault ([
     }
 ]);
 
-luisIntents.matches(/\b(agenta|Agenta|Agenta|Hi|Yo|Hello)\b/i, '/wakeAgenta')
-    .matches('TestMySkill', '/testSkill')
-    .matches('AnalyseImage', '/analyseImage')
-    .matches('SendEmail', '/sendEmail');
 
+/**
+ * Description: Mapping the intents to a dialog
+ */
+luisIntents.matches(/\b(agenta|Agenta|Agenta|Hi|Yo|Hello)\b/i, '/wakeAgenta')
+    .matches('TestMySkill', '/testSkill');
     bot.dialog('/wakeAgenta', function(session) {
+        // Clear user data in the session
+        session.userData.careerInTest = "";
+        session.userData.randomNum = 0;
+        session.userData.correctAnswer = "";
+        session.userData.explanation = "";
+        session.userData.areaOfFocus = "";
+        session.userData.score = "";
+        session.userData.questionNum = 0;
         session.send("Hi! I\'m Agenta, the Skills Assessment Bot.");
-        // "Push" the help dialog onto the dialog stack
+        // "Push" the help dialog onto the dialog stack to let the user know how the bot can help
         session.beginDialog('/help');
         session.endDialog();
     }
@@ -94,24 +103,24 @@ bot.dialog('/help', function(session) {
     }
 );
 
+/**
+ * @Description: This is the main dialog that is called
+ */
 bot.dialog('/testSkill', [
     function (session, args) {
         //Show user that we're processing their request by sending the typing indicator
         session.sendTyping();
         // Get the list of Entities returned from LUIS
         var testSkillEntities = args.entities;
-        // See if what the user said has the '' and the 'count' Entities
+        // See if what the user said has the 'typeCareer' and the 'typeSkill' Entities
         var careerEntity = builder.EntityRecognizer.findEntity(testSkillEntities, 'typeCareer');
         var skillEntity = builder.EntityRecognizer.findEntity(testSkillEntities, 'typeSkill');
         if (careerEntity) {
-            for(key in testSkillEntities) {
-                // Get the Skill at the current index in the loop
-                var entity = testSkillEntities[key];
-                // See if what the user said has the 'whichCareer' Entity
-                if (entity.type == 'whichCareer') {
-                    session.userData.careerInTest = entity.entity;
-                    session.beginDialog('/confirm', "Career");
-                }
+            var whichCareerEntity = builder.EntityRecognizer.findEntity(testSkillEntities, 'whichCareer');
+            var career = whichCareerEntity.entity;
+            if (whichCareerEntity) {
+                session.userData.careerInTest = career;
+                session.beginDialog('/confirm', "Career");
             }
         } else if (skillEntity) {
             var whichSkillEntity = builder.EntityRecognizer.findEntity(testSkillEntities, 'whichSkill');
@@ -128,8 +137,15 @@ bot.dialog('/testSkill', [
         }
     },
     function (session) {
-        var percentScore = (session.conversationData.questionNum/session.userData.score) * 100;
+        var percentScore = (session.userData.questionNum/session.userData.score) * 100;
             session.endConversation("You've scored %s on your  %s Quiz.", percentScore, session.conversationData.skill.toUpperCase());
+
+            // TODO: This can be extended to provide the user's level of profiency in the technology area.
+            // Somehing like 'Beginner', 'Moderate', 'Expert'.  If the user is not an 'Expert' then
+            // the bot can search for classes related to the technology on the learning portal of the company
+            // and ask the user if he/she wants the bot to register them for any courses that the user is
+            // interested in.  The bot can also present and email the user additional links to tutorials 
+            // that the user can take to help build their skills   
     }
 ]);
 
@@ -156,6 +172,14 @@ bot.dialog('/confirm', [
     }
 ]);
 
+/**
+ * @Description: This function determines the career that the user wants to pursue and matches
+ * it to a matrix of skills that are needed for that career forward to the user to a dialog
+ * that asks the user which skill they would like to take a quiz on.
+ *  
+ * @param {*} session 
+ * @param {*} whichCareer 
+ */
 function doCareer (session, whichCareer) {
     //go through the list of careers and enumerate the skills applicable for the chosen input
     var careerList = careers.careerSkills;
@@ -198,9 +222,7 @@ bot.dialog('/askToTakeTest', [
 
 bot.dialog('/testSkills', function(session, args) {
     var whichSkill = args.skill;
-    
     session.userData.score = 0;
-        
     if ("Java".toLowerCase() == whichSkill.toLowerCase()) {
         var javaQuestionsCopy = javaQuestions;
         session.userData.whichQuiz = javaQuestionsCopy;
@@ -216,11 +238,16 @@ bot.dialog('/testSkills', function(session, args) {
     }
 });
 
-
+/**
+ * @Description: Displays a set of questions and captures user's responses to those questions
+ * based on the test the user indicated they would like to take.  the questions are presented
+ * in a random order each time a test is executed.  It grades each the answer to each question
+ * and provides an explanation and also encourages the user as they proceed.
+ */
 bot.dialog('/doQuiz', [
     function (session) {  
         var questionsCopy = session.userData.whichQuiz.questions;
-        var questionNum = session.conversationData.questionNum;
+        var questionNum = session.userData.questionNum;
         questionNum > 0 ? questionNum = questionNum : questionNum = 1;
         if (questionsCopy.length > 0) {
             var numQuestions = questionsCopy.length;
@@ -249,6 +276,8 @@ bot.dialog('/doQuiz', [
     function (session, results) {
         var questionsCopy = session.userData.whichQuiz.questions;
         if(results.response) {
+            //Show user that we're processing their request by sending the typing indicator
+            session.sendTyping();
             if (session.dialogData.correctAnswer.toLowerCase() == results.response.toLowerCase()) {
                 session.send("correct answer is %s.\n\nExplanation: %s", session.dialogData.correctAnswer, session.dialogData.explanation);
                 session.send("Great job!");
@@ -257,7 +286,10 @@ bot.dialog('/doQuiz', [
                 session.send("correct answer is %s.\n\nExplanation: %s", session.dialogData.correctAnswer, session.dialogData.explanation);
                 session.send("That's ok! It's part of learning.");
             }
-            session.conversationData.questionNum++;
+            var questionNum = session.userData.questionNum;
+           /// questionNum++;
+            //session.userData.questionNum = questionNum;
+            session.userData.questionNum++;
             questionsCopy.splice(session.dialogData.randomNum, 1);
             if (questionsCopy.length <= 0) {
                 session.endDialog();
@@ -265,7 +297,6 @@ bot.dialog('/doQuiz', [
             session.replaceDialog('/doQuiz');
             
         } else {
-            //session.endDialog();
             session.replaceDialog('/doQuiz', "Sorry, I don't understand. Let's start over.");
         }  
     }
