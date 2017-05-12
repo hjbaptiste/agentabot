@@ -11,7 +11,6 @@ var javaQuestions = require('./javaQuiz'); // no need to add the .json extension
 var agileQuestions = require('./agileQuiz'); // no need to add the .json extension
 var careers = require('./careerSkills');
 
-
 var useEmulator = (process.env.NODE_ENV == 'development');
 useEmulator = true;
 
@@ -96,6 +95,7 @@ bot.dialog('/help', function(session) {
     }
 );
 
+var careerInTest;
 bot.dialog('/testSkill', [
     function (session, args) {
         //Show user that we're processing their request by sending the typing indicator
@@ -112,17 +112,10 @@ bot.dialog('/testSkill', [
                 // See if what the user said has the 'when' and the 'holiday' Entities
                 if (entity.type == 'whichCareer') {
                     //Confirm the career with the user
-                    session.send("Great! Sounds like you're interested in a career in %s.", entity.entity);
-                    builder.Prompts.confirm(session, "Is that correct?");
-                    var whichCareer_confirm = session.message.text;
-                    //If the user confirms their career choice, move forward
-                    if (whichCareer_confirm == 'Yes') {
-                        var career = entity.entity;
-                        doCareer(session, career);
-                    }
-                    //If the user doesn't confirm their career choice, print out careers to choose from
-                    else {
-                    }
+                    //session.send("Great! Sounds like you're interested in a career in %s.", entity.entity);
+                    //builder.Prompts.confirm(session, "Is that correct?");
+                    careerInTest = entity.entity;
+                    session.beginDialog('/confirm', "Career");
                 }
             }
         } else if (skillEntity) {
@@ -140,9 +133,29 @@ bot.dialog('/testSkill', [
             session.send("Sorry, I didn't understand.");
             session.beginDialog('/help');
         }
-    },
-    function () {
+    }
+]);
 
+bot.dialog('/confirm', [
+    function(session, args) {
+        var topic = args;
+        console.log("Topic:" + topic);
+        if(topic == "Career") {
+            session.send("Great! Sounds like you're interested in a career in %s.", careerInTest);
+            builder.Prompts.confirm(session, "Is that correct?");
+        }
+    },
+    function(session, results) {
+        var whichCareer_confirm = session.message.text;
+        //If the user confirms their career choice, move forward
+        if (whichCareer_confirm == 'Yes') {
+            doCareer(session, careerInTest);
+        }
+        //If the user doesn't confirm their career choice, print out careers to choose from
+        else {
+            session.send("Sorry, I didn't understand.");
+            session.beginDialog('/help');
+        }
     }
 ]);
 
