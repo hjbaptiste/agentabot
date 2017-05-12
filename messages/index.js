@@ -161,7 +161,7 @@ bot.dialog('/confirm', [
     function(session, results) {
         var whichCareer_confirm = session.message.text;
         //If the user confirms their career choice, move forward
-        if (whichCareer_confirm == 'Yes') {
+        if (whichCareer_confirm.toLowerCase() == 'Yes'.toLowerCase()) {
             doCareer(session, session.userData.careerInTest);
         }
         //If the user doesn't confirm their career choice, print out careers to choose from
@@ -185,15 +185,23 @@ function doCareer (session, whichCareer) {
     var careerList = careers.careerSkills;
     var career;
     var skillsList = "";
+    var found = false;
     console.log("Career: " + whichCareer);
 
     for(var i in careerList) {
         console.log("Career name:" + careerList.name);
-        if(careerList[i].name.toLowerCase == whichCareer.toLowerCase) {
+        if(careerList[i].name.toLowerCase() == whichCareer.toLowerCase()) {
             career = careerList[i];
+            found = true;
             break;
         }
     }
+
+    if(found == false) {
+        session.send("Sorry, a quiz is not yet available on this topic.");
+        session.beginDialog("/help");
+    }
+
     var textResp = "Here are a few skills I can quiz you on related to a " + whichCareer + ".";
     var skills = career.skills;
     for(var j in skills) {
@@ -210,8 +218,8 @@ bot.dialog('/askToTakeTest', [
     function(session, results){
         var skillToTest = results.response;
         console.log("Response:" + results.response);
-        if(skillToTest.toLowerCase == "Java".toLowerCase || skillToTest.toLowerCase == "Agile".toLowerCase) {
-            doQuiz(javaQuestions);
+        if(skillToTest.toLowerCase() == "Java".toLowerCase() || skillToTest.toLowerCase() == "Agile".toLowerCase()) {
+            session.beginDialog("/testSkills", {skill:skillToTest});
         } else {
             session.endDialog("I'm sorry, but I don't have a quiz for this skill yet.");
             session.beginDialog("/help");
