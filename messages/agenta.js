@@ -99,7 +99,7 @@ bot.dialog('/help', function(session) {
 bot.dialog('/testSkill', [
     function (session, args) {
         //Show user that we're processing their request by sending the typing indicator
-            session.sendTyping();
+        session.sendTyping();
         // Get the list of Entities returned from LUIS
         var testSkillEntities = args.entities;
         // See if what the user said has the '' and the 'count' Entities
@@ -126,14 +126,13 @@ bot.dialog('/testSkill', [
                 }
             }
         } else if (skillEntity) {
-            for(key in testSkillEntities) {
-                // Get the Holiday at the current index in the loop
-                var entity = testSkillEntities[key];
-                // See if what the user said has the 'when' and the 'holiday' Entities
-                if (entity.type == 'whichSkill') {
-                    var skill = entity.entity;
-                    testSkills(session, skill);
-                }
+            var whichSkillEntity = builder.EntityRecognizer.findEntity(testSkillEntities, 'whichSkill');
+            var skill = whichSkillEntity.entity;
+            if (whichSkillEntity) {
+                
+                session.conversationData.skill = skill;
+                session.beginDialog('/testSkills', {skill: skill});
+                
             }
         } else {
             // If neither Entity was returned then inform the user and call the 'help' dialog
@@ -141,8 +140,10 @@ bot.dialog('/testSkill', [
             session.beginDialog('/help');
         }
     },
-    function () {
-
+    function (session) {
+        var percentScore = (session.conversationData.questionNum/session.userData.score) * 100;
+            //session.send("You've scored %s on your  %s Quiz.", percentScore, skill.toUpperCase());
+        session.send("You've scored 2 on your quiz");
     }
 ]);
 
@@ -186,49 +187,87 @@ bot.dialog('/askToTakeTest', [
 ]);
 
 
-var testSkills = function(session, whichSkill) {
-    if ("Java".toLowerCase == whichSkill.toLowerCase) {
-        doQuiz(session, javaQuestions);
-    } else if ("Agile".toLowerCase == whichSkill.toLowerCase) {
-        doQuiz(session, agileQuestions);
-    }
-};
-
-
-function doQuiz (session, whichQuiz) {
-    var score = 0;
-    var questions = whichQuiz.questions;
-    var questionsCopy = questions;
+bot.dialog('/testSkills', function(session, args) {
+    var whichSkill = args.skill;
     
-    var questionNum = 1;
-    while (questionsCopy.length > 0) {
-         var numQuestions = questionsCopy.length;
-         var randomNum = getRandomInt(0, numQuestions);
-         var currentQuestion = questionsCopy[randomNum];
-         var description = currentQuestion.description;
-         var answers = currentQuestion.answers;
-         var numOfAnswers = answers.length;
-         var answer = currentQuestion.answer;
-         var explanation = currentQuestion.explanation;
-         var areaOfFocus = currentQuestion.areaOfFocus;
-         session.send("Question %i - %s", questionNum, description);
-         var choices = "";
-         while (numOfAnswers > 0) {
-             for (key in answers) {
-                 var choice = Object.keys(answers[key]);
-                 
-                 choices += ("\n\n" + choice[0] +  " - " + answers[key][choice[0]]);
-                 numOfAnswers--;
-             } 
-         }
-         // Prompt user to select an answer from the multiple choices
-        //builder.Prompts.choice(session, choices);
-        builder.Prompts.text(session, "Select the correct answer", "a|b|c");
-        questionsCopy.splice(randomNum, 1);
-        questionNum++;
+    session.userData.score = 0;
+        
+    if ("Java".toLowerCase() == whichSkill.toLowerCase()) {
+        var javaQuestionsCopy = javaQuestions;
+        session.userData.whichQuiz = javaQuestionsCopy;
+        //session.conversationData.whichQuiz = javaQuestions;
+        session.beginDialog('/doQuiz');
+        //doQuiz(session, javaQuestions);
+    } else if ("Agile".toLowerCase() == whichSkill.toLowerCase()) {
+        var agileQuestionsCopy = agileQuestions;
+        session.userData.whichQuiz = agileQuestionsCopy;
+        //session.conversationData.whichQuiz = agileQuestions;
+        session.beginDialog('/doQuiz');
+        //doQuiz(session, agileQuestions);
     }
-    return score;
-};
+});
+
+
+bot.dialog('/doQuiz', [
+    function (session) {  
+        var questionsCopy = session.userData.whichQuiz.questions;
+        var questionNum = session.conversationData.questionNum;
+       /* if (questionNum > 0) {
+            questionNum = questionNum;
+        } else {
+            questionNum = 1;
+        }*/
+        questionNum > 0 ? questionNum = questionNum : questionNum = 1;
+        if (questionsCopy.length > 0) {
+            var numQuestions = questionsCopy.length;
+            var randomNum = getRandomInt(0, numQuestions);
+            session.dialogData.randomNum = randomNum;
+            var currentQuestion = questionsCopy[randomNum];
+            var description = currentQuestion.description;
+            var answers = currentQuestion.answers;
+            var numOfAnswers = answers.length;
+            session.send("Question %i - %s", questionNum, description);
+            var choices = "";
+            while (numOfAnswers > 0) {
+                for (key in answers) {
+                    var choice = Object.keys(answers[key]);
+                    
+                    choices += ("\n\n" + choice[0] +  " - " + answers[key][choice[0]]);
+                    numOfAnswers--;
+                } 
+            }
+            session.dialogData.correctAnswer = currentQuestion.answer;
+            session.dialogData.explanation = currentQuestion.explanation;
+            session.dialogData.areaOfFocus = currentQuestion.areaOfFocus;
+            builder.Prompts.text(session, choices);  
+        } 
+    },
+    function (session, results) {
+        session.send(results.response);
+        var questionsCopy = session.userData.whichQuiz.questions;
+        if(results.response) {
+            if (session.dialogData.correctAnswer.toLowerCase() == results.response.toLowerCase()) {
+                session.send("correct answer is %s.\n\nExplanation: %s", session.dialogData.correctAnswer, session.dialogData.explanation);
+                session.send("Great job!");
+                session.userData.score++;
+            } else {
+                session.send("correct answer is %s.\n\nExplanation: %s", session.dialogData.correctAnswer, session.dialogData.explanation);
+                session.send("That's ok! It's part of learning.");
+            }
+            session.conversationData.questionNum++;
+            questionsCopy.splice(session.dialogData.randomNum, 1);
+            if (questionsCopy.length <= 0) {
+                session.endDialog();
+            }
+            session.replaceDialog('/doQuiz');
+            
+        } else {
+            //session.endDialog();
+            session.replaceDialog('/doQuiz', "Sorry, I don't understand. Let's start over.");
+        }  
+    }
+]);
+
 
 /**
  * Generates random integer between two numbers low (inclusive) and high (exclusive)
@@ -237,7 +276,7 @@ function doQuiz (session, whichQuiz) {
  */
 var getRandomInt = function (low, high) {
     return Math.floor(Math.random() * (high - low) + low);
-}
+};
 /**
  * @Description: This dialog is triggered when the user says 'bye'.  It stops
  * all dialog and respond to the user
