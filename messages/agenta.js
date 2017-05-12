@@ -42,7 +42,7 @@ var luisAppId = process.env.LuisAppId;
 var luisAPIKey = process.env.LuisAPIKey;
 var luisAPIHostName = process.env.LuisAPIHostName || 'westus.api.cognitive.microsoft.com';
 
-//const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' + luisAppId + '&subscription-key=' + luisAPIKey;
+// Luis model export Assie_Luis.json
 const LuisModelUrl = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/b9c4c92f-5f8a-4735-85e3-22ce68bed7c2?subscription-key=6e5c542c313242c38f8d5dd8e987e3d3&timezoneOffset=0&verbose=true&q=";
 
 // Main dialog with LUIS
