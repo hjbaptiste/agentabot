@@ -4,7 +4,7 @@
     "careerSkills": [
         {
             "name": "Software Developer",
-            "description": "Software Engineers are responsible for developing, designing, testing, writing, modifying, and debugging software based off specific requirements.",
+            "description": "Software Developers are responsible for developing, designing, testing, writing, modifying, and debugging software based off specific requirements.",
             "skills": ["Java", "C++", "C#", "Python", "Node.js"]
         },
         {
