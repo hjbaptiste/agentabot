@@ -110,7 +110,7 @@ bot.dialog('/testSkill', [
                 var entity = testSkillEntities[key];
                 // See if what the user said has the 'when' and the 'holiday' Entities
                 if (entity.type == 'whichCareer') {
-                    career = entity.entity;
+                    var career = entity.entity;
                     doCareer(session, career);
                 }
             }
@@ -120,7 +120,7 @@ bot.dialog('/testSkill', [
                 var entity = testSkillEntities[key];
                 // See if what the user said has the 'when' and the 'holiday' Entities
                 if (entity.type == 'whichSkill') {
-                    skill = entity.entity;
+                    var skill = entity.entity;
                     testSkills(session, skill);
                 }
             }
@@ -141,9 +141,9 @@ var doCareer = function (session, whichCareer) {
 
 var testSkills = function(session, whichSkill) {
     if ("Java".toLowerCase == whichSkill.toLowerCase) {
-        doQuiz(javaQuestions);
+        doQuiz(session, javaQuestions);
     } else if ("Agile".toLowerCase == whichSkill.toLowerCase) {
-        doQuiz(agileQuestions);
+        doQuiz(session, agileQuestions);
     }
 };
 
@@ -155,22 +155,32 @@ function doQuiz (session, whichQuiz) {
     var numQuestions = questionsCopy.length;
     var questionNum = 1;
     while (questionsCopy.length > 0) {
-         var currentQuestion = questionsCopy[getRandomInt(0, numQuestions)];
+         var randomNum = getRandomInt(0, numQuestions);
+         var currentQuestion = questionsCopy[randomNum];
          var description = currentQuestion.description;
          var answers = currentQuestion.answers;
+         var numOfAnswers = answers.length;
          var answer = currentQuestion.answer;
          var explanation = currentQuestion.explanation;
          var areaOfFocus = currentQuestion.areaOfFocus;
          session.send("Question %i - %s", questionNum, description);
          var choices = "";
-         while (answers.length > 0) {
+         while (numOfAnswers > 0) {
              for (key in answers) {
-                 choices = ("\nn%s - %s", key, answers[key])
-             }
+                 var choice = Object.keys(answers[key]);
+                 
+                 choices += ("\n\n" + choice[0] +  " - " + answers[key][choice[0]]);
+                 numOfAnswers--;
+             } 
          }
          // Prompt user to select an answer from the multiple choices
-        builder.Prompts.choice(session, choices);
+        //builder.Prompts.choice(session, choices);
+        builder.Prompts.text(session, "Select the correct answer", "a|b|c");
+        questionsCopy.splice(randomNum, 1);
+        numQuestions = questionsCopy.length;
+        questionNum++;
     }
+    return score;
 };
 
 /**
