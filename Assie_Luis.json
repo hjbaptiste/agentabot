@@ -1,0 +1,197 @@
+{
+  "luis_schema_version": "2.1.0",
+  "versionId": "0.1",
+  "name": "Assie",
+  "desc": "IT Assessment",
+  "culture": "en-us",
+  "intents": [
+    {
+      "name": "None"
+    },
+    {
+      "name": "TestMySkill"
+    }
+  ],
+  "entities": [
+    {
+      "name": "typeCareer"
+    },
+    {
+      "name": "typeSkill"
+    },
+    {
+      "name": "whichCareer"
+    },
+    {
+      "name": "whichSkill"
+    }
+  ],
+  "composites": [],
+  "closedLists": [],
+  "bing_entities": [],
+  "actions": [],
+  "model_features": [],
+  "regex_features": [],
+  "utterances": [
+    {
+      "text": "i want to pursue a career as a scrum master",
+      "intent": "TestMySkill",
+      "entities": [
+        {
+          "entity": "whichCareer",
+          "startPos": 31,
+          "endPos": 42
+        },
+        {
+          "entity": "typeCareer",
+          "startPos": 19,
+          "endPos": 24
+        }
+      ]
+    },
+    {
+      "text": "test my skill in software engineering",
+      "intent": "TestMySkill",
+      "entities": [
+        {
+          "entity": "whichCareer",
+          "startPos": 17,
+          "endPos": 36
+        },
+        {
+          "entity": "typeCareer",
+          "startPos": 8,
+          "endPos": 12
+        }
+      ]
+    },
+    {
+      "text": "i want to have a job in web development",
+      "intent": "TestMySkill",
+      "entities": [
+        {
+          "entity": "whichCareer",
+          "startPos": 24,
+          "endPos": 38
+        },
+        {
+          "entity": "typeCareer",
+          "startPos": 17,
+          "endPos": 19
+        }
+      ]
+    },
+    {
+      "text": "i want to test my java skill",
+      "intent": "TestMySkill",
+      "entities": [
+        {
+          "entity": "whichSkill",
+          "startPos": 18,
+          "endPos": 21
+        },
+        {
+          "entity": "typeSkill",
+          "startPos": 23,
+          "endPos": 27
+        }
+      ]
+    },
+    {
+      "text": "test my skill in java",
+      "intent": "TestMySkill",
+      "entities": [
+        {
+          "entity": "whichSkill",
+          "startPos": 17,
+          "endPos": 20
+        },
+        {
+          "entity": "typeSkill",
+          "startPos": 8,
+          "endPos": 12
+        }
+      ]
+    },
+    {
+      "text": "how do i get a career in software engineering?",
+      "intent": "TestMySkill",
+      "entities": [
+        {
+          "entity": "whichCareer",
+          "startPos": 25,
+          "endPos": 44
+        },
+        {
+          "entity": "typeCareer",
+          "startPos": 15,
+          "endPos": 20
+        }
+      ]
+    },
+    {
+      "text": "i want to pursue a career as a software developer",
+      "intent": "TestMySkill",
+      "entities": [
+        {
+          "entity": "whichCareer",
+          "startPos": 31,
+          "endPos": 48
+        },
+        {
+          "entity": "typeCareer",
+          "startPos": 19,
+          "endPos": 24
+        }
+      ]
+    },
+    {
+      "text": "i would like to test my java skills",
+      "intent": "TestMySkill",
+      "entities": [
+        {
+          "entity": "whichSkill",
+          "startPos": 24,
+          "endPos": 27
+        },
+        {
+          "entity": "typeSkill",
+          "startPos": 29,
+          "endPos": 34
+        }
+      ]
+    },
+    {
+      "text": "what are the required skills for java?",
+      "intent": "TestMySkill",
+      "entities": [
+        {
+          "entity": "whichSkill",
+          "startPos": 33,
+          "endPos": 36
+        },
+        {
+          "entity": "typeSkill",
+          "startPos": 22,
+          "endPos": 27
+        }
+      ]
+    },
+    {
+      "text": "career as scrum master",
+      "intent": "TestMySkill",
+      "entities": [
+        {
+          "entity": "whichCareer",
+          "startPos": 10,
+          "endPos": 21
+        },
+        {
+          "entity": "typeCareer",
+          "startPos": 0,
+          "endPos": 5
+        }
+      ]
+    }
+  ]
+}

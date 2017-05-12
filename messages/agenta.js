@@ -105,9 +105,9 @@ bot.dialog('/testSkill', [
         var skillEntity = builder.EntityRecognizer.findEntity(testSkillEntities, 'typeSkill');
         if (careerEntity) {
             for(key in testSkillEntities) {
-                // Get the Holiday at the current index in the loop
+                // Get the Skill at the current index in the loop
                 var entity = testSkillEntities[key];
-                // See if what the user said has the 'when' and the 'holiday' Entities
+                // See if what the user said has the 'whichCareer' Entity
                 if (entity.type == 'whichCareer') {
                     session.userData.careerInTest = entity.entity;
                     session.beginDialog('/confirm', "Career");
@@ -129,8 +129,7 @@ bot.dialog('/testSkill', [
     },
     function (session) {
         var percentScore = (session.conversationData.questionNum/session.userData.score) * 100;
-            //session.send("You've scored %s on your  %s Quiz.", percentScore, skill.toUpperCase());
-        session.send("You've scored 2 on your quiz");
+            session.endConversation("You've scored %s on your  %s Quiz.", percentScore, session.conversationData.skill.toUpperCase());
     }
 ]);
 
@@ -230,11 +229,6 @@ bot.dialog('/doQuiz', [
     function (session) {  
         var questionsCopy = session.userData.whichQuiz.questions;
         var questionNum = session.conversationData.questionNum;
-       /* if (questionNum > 0) {
-            questionNum = questionNum;
-        } else {
-            questionNum = 1;
-        }*/
         questionNum > 0 ? questionNum = questionNum : questionNum = 1;
         if (questionsCopy.length > 0) {
             var numQuestions = questionsCopy.length;
