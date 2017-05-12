@@ -20,66 +20,66 @@
         },
         {
             "description": "What is the default value of double variable?",
-            "answers": {"A": "0.0d", "B": "0.0f",
-                        "C": "0", "D": "Not defined"},
+            "answers": [{"A": "0.0d"}, {"B": "0.0f"},
+                        {"C": "0"}, {"D": "Not defined"}],
             "answer": "A",
             "explanation": "double variable has default value of 0.0d if defined as an instance/static variable.",
             "areaOfFocus": "Number Types"
         },
         {
             "description": "Which of the following is true about protected access modifier",
-            "answers": {"A": "Variables, methods and constructors which are declared protected can be accessed by any class.", 
-                        "B": "Variables, methods and constructors which are declared protected can be accessed by any class lying in same package.",
-                        "C": "Variables, methods and constructors which are declared protected in the superclass can be accessed only by its child class.",
-                        "D": "None of the above."},
+            "answers": [{"A": "Variables, methods and constructors which are declared protected can be accessed by any class."}, 
+                        {"B": "Variables, methods and constructors which are declared protected can be accessed by any class lying in same package."},
+                        {"C": "Variables, methods and constructors which are declared protected in the superclass can be accessed only by its child class."},
+                        {"D": "None of the above."}],
             "answer": "C",
             "explanation": "Protected access modifier is used to restrict access to variables, methods and constructors to subclass only. Subclass can lie in different package.",
             "areaOfFocus": "Access Modifier"
         },
         {
             "description": "A class always has a default constructor.",
-            "answers": {"A": "True", "B": "False"},
+            "answers": [{"A": "True"}, {"B": "False"}],
             "answer": "B",
             "explanation": "It is not mandatory to have a default constructor in a class.",
             "areaOfFocus": "Class creation"
         },
         {
             "description": "Can a constructor be made final?",
-            "answers": {"A": "True", "B": "False"},
+            "answers": [{"A": "True"}, {"B": "False"}],
             "answer": "B",
             "explanation": "No, this is not possible.",
             "areaOfFocus": "Class creation"
         },
         {
             "description": "What is NullPointerException?",
-            "answers": {"A": "A NullPointerException is thrown when calling the instance method of a null object or modifying/accessing field of a null object.",
-                        "B": "A NullPointerException is thrown when object is set as null.",
-                        "C": "A NullPointerException is thrown when object property is set as null.",
-                        "D": "None of the above."},
+            "answers": [{"A": "A NullPointerException is thrown when calling the instance method of a null object or modifying/accessing field of a null object."},
+                        {"B": "A NullPointerException is thrown when object is set as null."},
+                        {"C": "A NullPointerException is thrown when object property is set as null."},
+                        {"D": "None of the above."}],
             "answer": "A",
             "explanation": "A NullPointerException is thrown when calling the instance method of a null object or modifying/accessing field of a null object.",
             "areaOfFocus": "Exception Handling"
         },
         {
             "description": "What is Serialization?",
-            "answers": {"A": "Serialization is the process of writing the state of an object to another object.",
-                        "B": "Serialization is the process of writing the state of an object to a byte stream.",
-                        "C": "Both of the above.", "D": "None of the above."},
+            "answers": [{"A": "Serialization is the process of writing the state of an object to another object."},
+                        {"B": "Serialization is the process of writing the state of an object to a byte stream."},
+                        {"C": "Both of the above."}, {"D": "None of the above."}],
             "answer": "B",
             "explanation": "Serialization is the process of writing the state of an object to a byte stream.",
             "areaOfFocus": "Serialization"
         },
         {
             "description": "Is it necessary that each try block must be followed by a catch block?",
-            "answers": {"A": "True", "B": "False"},
+            "answers": [{"A": "True"}, {"B": "False"}],
             "answer": "B",
             "explanation": "It is not necessary that each try block must be followed by a catch block. It should be followed by either a catch block or a finally block.",
             "areaOfFocus": "Exception Handling"
         },
         {
             "description": "This is the parent of Error and Exception classes.",
-            "answers": {"A": "Throwable", "B": "Catchable",
-                        "C": "MainError", "D": "MainException"},
+            "answers": [{"A": "Throwable"}, {"B": "Catchable"},
+                        {"C": "MainError"}, {"D": "MainException"}],
             "answer": "A",
             "explaination": "Throwable is the parent of both Error and Exception class.",
             "areaOfFocus": "Exception Handling"
