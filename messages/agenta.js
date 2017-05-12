@@ -65,7 +65,7 @@ bot.dialog('/', luisIntents);
 luisIntents.onDefault ([
     function (session) {
         // If neither Entity was returned then inform the user and call the 'help' dialog
-        session.send("Sorry, I did not understand \'%s\'.", session.message.text);
+        session.send("I'm sorry, I didn't understand \'%s\'.", session.message.text);
         session.beginDialog('/help');
     },
     function (session) {
@@ -79,7 +79,7 @@ luisIntents.matches(/\b(agenta|Agenta|Agenta|Hi|Yo|Hello)\b/i, '/wakeAgenta')
     .matches('SendEmail', '/sendEmail');
 
     bot.dialog('/wakeAgenta', function(session) {
-        session.send("Hi! I\'m Agenta, the skills assessment bot.");
+        session.send("Hi! I\'m Agenta, the Skills Assessment Bot.");
         // "Push" the help dialog onto the dialog stack
         session.beginDialog('/help');
         session.endDialog();
@@ -90,7 +90,7 @@ luisIntents.matches(/\b(agenta|Agenta|Agenta|Hi|Yo|Hello)\b/i, '/wakeAgenta')
  * @Descripton: Informs the uer what functions that can be performed.
  */
 bot.dialog('/help', function(session) {
-        session.endDialog("I can help assess your proficiency in various areas of technology.  You can say things like:\n\n\"I want to pursue a career as a Software Developer\"\n\n\"I would like to test my Java skills\"");
+        session.endDialog("I can help assess your proficiency in various areas of technology.  You can say:\n\n\"I want to pursue a career as a Software Developer\" or \n\n\"I would like to test my Java skills\"");
     }
 );
 
@@ -115,7 +115,7 @@ bot.dialog('/testSkill', [
             }
         } else if (skillEntity) {
             for(key in testSkillEntities) {
-                // Get the Holiday at the current index in the loop
+                // Get the Skill at the current index in the loop
                 var entity = testSkillEntities[key];
                 // See if what the user said has the 'when' and the 'holiday' Entities
                 if (entity.type == 'whichSkill') {
@@ -125,7 +125,7 @@ bot.dialog('/testSkill', [
             }
         } else {
             // If neither Entity was returned then inform the user and call the 'help' dialog
-            session.send("Sorry, I didn't understand.");
+            session.send("I'm sorry, I didn't understand that.");
             session.beginDialog('/help');
         }
     }
@@ -148,7 +148,7 @@ bot.dialog('/confirm', [
         }
         //If the user doesn't confirm their career choice, print out careers to choose from
         else {
-            session.send("Sorry, I didn't understand.");
+            session.send("I'm sorry, I didn't understand that.");
             session.beginDialog('/help');
         }
     }
@@ -168,7 +168,7 @@ function doCareer (session, whichCareer) {
             break;
         }
     }
-    var textResp = "These are the skills needed for a career as a " + whichCareer + ":";
+    var textResp = "Here are a few skills I can quiz you on related to a " + whichCareer + ".";
     var skills = career.skills;
     for(var j in skills) {
         skillsList += '\n\n'+ skills[j];    
@@ -187,7 +187,7 @@ bot.dialog('/askToTakeTest', [
         if(skillToTest.toLowerCase == "Java".toLowerCase || skillToTest.toLowerCase == "Agile".toLowerCase) {
             doQuiz(javaQuestions);
         } else {
-            session.endDialog("Sorry, this test is not yet available.");
+            session.endDialog("I'm sorry, but I don't have a quiz for this skill yet.");
             session.beginDialog("/help");
         }
     }
