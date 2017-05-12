@@ -143,7 +143,7 @@ bot.dialog('/confirm', [
     function(session, results) {
         var whichCareer_confirm = session.message.text;
         //If the user confirms their career choice, move forward
-        if (whichCareer_confirm == 'Yes') {
+        if (whichCareer_confirm.toLowerCase == 'Yes'.toLowerCase) {
             doCareer(session, session.userData.careerInTest);
         }
         //If the user doesn't confirm their career choice, print out careers to choose from
