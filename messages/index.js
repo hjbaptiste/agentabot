@@ -1,7 +1,6 @@
-//=========================================================
-// Bot for demonstrating Cognitive Services API calls
-//   - menu dialogs based on:  https://github.com/Microsoft/BotBuilder/blob/master/Node/examples/basics-menus/app.js
-//=========================================================
+//--------------------------------
+//- AgentaBot Get your skills up -
+//--------------------------------
 
 var builder = require('botbuilder');
 var botbuilder_azure = require("botbuilder-azure");
@@ -137,7 +136,8 @@ bot.dialog('/testSkill', [
         }
     },
     function (session) {
-        var percentScore = (session.userData.questionNum/session.userData.score) * 100;
+        //var percentScore = (session.userData.questionNum/session.userData.score) * 100;
+        var percentScore = Math.round((100 - (session.userData.whichQuiz.questions.length / session.userData.score) * 100) * 100) / 100;
             session.endConversation("You've scored %s on your  %s Quiz.", percentScore, session.conversationData.skill.toUpperCase());
 
             // TODO: This can be extended to provide the user's level of profiency in the technology area.
